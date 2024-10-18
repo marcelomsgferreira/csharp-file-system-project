@@ -8,12 +8,12 @@ namespace App.Abstractions
 {
     internal interface IFileService
     {
-        public bool CopyFile(string sourcePath, string destinationPath, bool overwrite = false);
-        public bool DeleteFile(string filePath);
-        public bool CreateFile(string filePath, bool overwrite = false);
-        public bool WriteFile(string filePath, string content, bool append = false);
-        public bool MoveFile(string sourcePath, string destinationPath);
-        public string? ReadFile(string filePath);
-        public bool RenameFile(string oldPath, string newPath);
+        public void CopyFile(string sourcePath, string destinationPath, bool overwrite = false);
+        public void DeleteFile(string filePath);
+        public void CreateFile(string filePath, bool overwrite = false);
+        public void WriteFile(string filePath, string content, bool append = false);
+        public void MoveFile(string sourcePath, string destinationPath);
+        public void ReadFile(string filePath);
+        public void RenameFile(string oldPath, string newPath);
     }
 }

@@ -4,101 +4,76 @@ namespace App.Services
 {
     internal class FolderService : IFolderService
     {
-        public bool CreateFolder(string path)
+        public void CreateFolder(string path)
         {
             try
             {
                 if (string.IsNullOrEmpty(path))
                 {
-                    throw new ArgumentNullException(nameof(path), "O caminho da pasta não pode ser nulo ou vazio.");
+                    throw new ArgumentNullException(nameof(path), "The folder path can't be null or empty.");
                 }
 
                 Directory.CreateDirectory(path);
-                return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao criar a pasta: {ex.Message}");
-                return false;
+                Console.WriteLine($"Error while creating folder: {ex.Message}");
             }
         }
 
-        public bool DeleteFolder(string path, bool recursive = false)
+        public void DeleteFolder(string path, bool recursive = false)
         {
             try
             {
                 if (string.IsNullOrEmpty(path))
                 {
-                    throw new ArgumentNullException(nameof(path), "O caminho da pasta não pode ser nulo ou vazio.");
+                    throw new ArgumentNullException(nameof(path), "The folder path can't be null or empty.");
                 }
 
                 if (!Directory.Exists(path))
                 {
-                    throw new DirectoryNotFoundException($"A pasta {path} não foi encontrada.");
+                    throw new DirectoryNotFoundException($"The folder {path} wasn't found.");
                 }
 
                 Directory.Delete(path, recursive);
-                return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao deletar a pasta: {ex.Message}");
-                return false;
+                Console.WriteLine($"Error while deleting folder: {ex.Message}");
             }
         }
 
-        public bool RenameFolder(string oldPath, string newPath)
+        public void RenameFolder(string oldPath, string newPath)
         {
             try
             {
                 if (string.IsNullOrEmpty(oldPath))
                 {
-                    throw new ArgumentNullException(nameof(oldPath), "O caminho antigo não pode ser nulo ou vazio.");
+                    throw new ArgumentNullException(nameof(oldPath), "the old path can't be null or empty.");
                 }
 
                 if (string.IsNullOrEmpty(newPath))
                 {
-                    throw new ArgumentNullException(nameof(newPath), "O caminho novo não pode ser nulo ou vazio.");
+                    throw new ArgumentNullException(nameof(newPath), "the new path can't be null or empty.");
                 }
 
                 if (!Directory.Exists(oldPath))
                 {
-                    throw new DirectoryNotFoundException($"A pasta {oldPath} não foi encontrada.");
+                    throw new DirectoryNotFoundException($"the folder {oldPath} wasn't found.");
                 }
 
                 Directory.Move(oldPath, newPath);
-                return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao renomear a pasta: {ex.Message}");
-                return false;
+                Console.WriteLine($"Error while renaming folder: {ex.Message}");
             }
         }
 
-        public bool MoveFolder(string sourcePath, string destinationPath)
+        public void MoveFolder(string sourcePath, string destinationPath)
         {
-            return RenameFolder(sourcePath, destinationPath);
+            RenameFolder(sourcePath, destinationPath);
         }
 
-        public void CopyFolder(string source, string dest)
-        {
-            if (!Directory.Exists(dest))
-            {
-                Directory.CreateDirectory(dest);
-            }
-
-            foreach (string file in Directory.GetFiles(source))
-            {
-                string destFile = Path.Combine(dest, Path.GetFileName(file));
-                File.Copy(file, destFile);
-            }
-
-            foreach (string directory in Directory.GetDirectories(source))
-            {
-                string newDirectory = Path.Combine(dest, Path.GetFileName(directory));
-                CopyFolder(directory, newDirectory);
-            }
-        }
     }
 }

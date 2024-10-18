@@ -1,78 +1,50 @@
-﻿bool ProgramOn = true;
-string filePath;
-string content;
-string sourceFileName;
-string destFileName;
-string folderPath;
+﻿
+IFileService fileService = new FileService();
+IFolderService folderService = new FolderService();
+
+FileInputs fileInputs = new FileInputs(fileService);
+FolderInputs folderInputs = new FolderInputs(folderService);
+
+bool ProgramOn = true;
 
 while (ProgramOn)
 {
-    int optionSelected = Utils.MainMenu();
+    int optionSelected = Helpers.MainMenu();
     int option2 = 0;
 
     switch (optionSelected)
     {
         case 1:
-            option2 = Utils.FileMenu();
+            option2 = Helpers.FileMenu();
 
             switch (option2)
             {
                 case 1:
-                    Console.WriteLine("Insert the full Path of the file + filename.extension:");
-                    filePath = Console.ReadLine();
-
-                    FileManagementService.CreateFile(filePath);
+                    fileInputs.AddFileInput();
                     break;
 
                 case 2:
-                    Console.WriteLine("Insert the full Path of the file + filename.extension:");
-                    filePath = Console.ReadLine();
-
-                    FileManagementService.ReadFile(filePath);
+                    fileInputs.ReadFileInput();
                     break;
 
                 case 3:
-                    Console.WriteLine("Insert the full Path of the file + filename.extension:");
-                    filePath = Console.ReadLine();
-                    Console.WriteLine("Now write the content that you wanna insert into File: ");
-                    content = Console.ReadLine();
-
-                    FileManagementService.WriteFile(filePath, content);
+                    fileInputs.WriteFileInput();
                     break;
 
                 case 4:
-                    Console.WriteLine("Insert the full Path of the file + filename.extension:");
-                    filePath = Console.ReadLine();
-
-                    FileManagementService.DeleteFile(filePath);
+                    fileInputs.DeleteFileInput();
                     break;
 
                 case 5:
-                    Console.WriteLine("Insert the full Path of the file + filename.extension:");
-                    string oldFilePath = Console.ReadLine();
-                    Console.WriteLine("Insert the full Path of the file + filename.extension:");
-                    string newFilePath = Console.ReadLine();
-
-                    FileManagementService.RenameFile(oldFilePath, newFilePath);
+                    fileInputs.RenameFileInput();
                     break;
 
                 case 6:
-                    Console.WriteLine("Insert the full Path of the file + filename.extension:");
-                    sourceFileName = Console.ReadLine();
-                    Console.WriteLine("Insert the full Path of the file + filename.extension:");
-                    destFileName = Console.ReadLine();
-
-                    FileManagementService.CopyFile(sourceFileName, destFileName);
+                    fileInputs.CopyFileInput();
                     break;
 
                 case 7:
-                    Console.WriteLine("Insert the full Path of the file + filename.extension:");
-                    sourceFileName = Console.ReadLine();
-                    Console.WriteLine("Insert the full Path of the file + filename.extension:");
-                    destFileName = Console.ReadLine();
-
-                    FileManagementService.MoveFile(sourceFileName, destFileName);
-
+                    fileInputs.MoveFileInput();
                     break;
 
                 case 0:
@@ -81,45 +53,33 @@ while (ProgramOn)
             }
 
             break;
+        
         case 2:
-            option2 = Utils.FolderMenu();
+            option2 = Helpers.FolderMenu();
 
             switch (option2)
             {
                 case 1:
-                    Console.WriteLine("Insert the full Path of the file + filename.extension:");
-                    folderPath = Console.ReadLine();
-
-                    FileManagementService.CreateFolder(folderPath);
+                    folderInputs.CreateFolderInput();
                     break;
                 case 2:
-                    Console.WriteLine("Insert the full Path of the file + filename.extension:");
-                    folderPath = Console.ReadLine();
-
-                    FileManagementService.DeleteFolder(folderPath);
+                    folderInputs.DeleteFolderInput();
                     break;
                 case 3:
-                    Console.WriteLine("Insert the full Path of the file + filename.extension:");
-                    string oldFolderPath = Console.ReadLine();
-                    Console.WriteLine("Insert the full Path of the file + filename.extension:");
-                    string newFolderPath = Console.ReadLine();
-
-                    FileManagementService.RenameFolder(oldFolderPath,newFolderPath);
+                    folderInputs.RenameFolderInput();
                     break;
                 case 4:
-                    Console.WriteLine("Insert the full Path of the file + filename.extension:");
-                    string sourceFolderPath = Console.ReadLine();
-                    Console.WriteLine("Insert the full Path of the file + filename.extension:");
-                    string destinationFolderPath = Console.ReadLine();
-
-                    FileManagementService.MoveFolder(sourceFolderPath, destinationFolderPath);
+                    folderInputs.MoveFolderInput();
                     break;
                 case 0:
+                    Console.WriteLine("Returning to main menu!");
                     break;
             }
 
             break;
+
         case 0:
+            
             Console.WriteLine("Are you sure you want to leave(s/n):");
             string areYouSure = Console.ReadLine();
 
@@ -129,12 +89,12 @@ while (ProgramOn)
                 ProgramOn = false;
                 break;
             }
+
             break;
 
         default:
             Console.WriteLine("Invalid Option");
             break;
     }
-
 
 }

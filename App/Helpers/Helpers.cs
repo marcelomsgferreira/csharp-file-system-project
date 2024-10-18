@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace App.Helpers
 {
-    internal static class Utils
+    internal static class Helpers
     {
         public static int MainMenu()
         {
@@ -45,20 +45,5 @@ namespace App.Helpers
             return int.Parse(Console.ReadLine());
         }
 
-        public static string? InsertFilePath()
-        {
-            Console.WriteLine("Type the File Path: ");
-            return Console.ReadLine();
-        }
-        public static string? InsertSourceFileName()
-        {
-            Console.WriteLine("Type the Source File Name with full path: ");
-            return Console.ReadLine();
-        }
-        public static string? InsertDestFileName()
-        {
-            Console.WriteLine("Type the Dest File Name with full path: ");
-            return Console.ReadLine();
-        }
     }
 }

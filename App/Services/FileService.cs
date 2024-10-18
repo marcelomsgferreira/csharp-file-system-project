@@ -1,185 +1,163 @@
 ﻿using App.Abstractions;
+using App.Helpers.Validators;
 using System.Text;
 
 namespace App.Services
 {
     internal class FileService : IFileService
     {
-        // File Management
-        public bool CopyFile(string sourcePath, string destinationPath, bool overwrite = false)
+        public void CopyFile(string sourcePath, string destinationPath, bool overwrite = false)
         {
             try
             {
                 if (string.IsNullOrEmpty(sourcePath))
                 {
-                    throw new ArgumentNullException(nameof(sourcePath), "O caminho da origem não pode ser nulo ou vazio.");
+                    throw new ArgumentNullException(nameof(sourcePath), "The origin path can't be null or empty.");
                 }
 
                 if (string.IsNullOrEmpty(destinationPath))
                 {
-                    throw new ArgumentNullException(nameof(destinationPath), "O caminho do destino não pode ser nulo ou vazio.");
+                    throw new ArgumentNullException(nameof(destinationPath), "The destination path can't be null or empty.");
                 }
 
-                if (!File.Exists(sourcePath))
-                {
-                    throw new FileNotFoundException($"O arquivo {sourcePath} não foi encontrado.");
-                }
+                if (PathValidator.IsValidPath(sourcePath) == false) return;
+                if (PathValidator.IsValidNewPath(destinationPath) == false) return;
 
                 File.Copy(sourcePath, destinationPath, overwrite);
-                return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao copiar o arquivo: {ex.Message}");
-                return false;
+                Console.WriteLine($"Error while copying File: {ex.Message}");
             }
         }
-        public bool DeleteFile(string filePath)
+        public void DeleteFile(string filePath)
         {
             try
             {
                 if (string.IsNullOrEmpty(filePath))
                 {
-                    throw new ArgumentNullException(nameof(filePath), "O caminho do arquivo não pode ser nulo ou vazio.");
+                    throw new ArgumentNullException(nameof(filePath), "The file path can't be null or empty.");
                 }
 
-                if (!File.Exists(filePath))
-                {
-                    throw new FileNotFoundException($"O arquivo {filePath} não foi encontrado.");
-                }
+                if (PathValidator.IsValidPath(filePath) == false) return;
 
                 File.Delete(filePath);
-                return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao deletar o arquivo: {ex.Message}");
-                return false;
+                Console.WriteLine($"Fail while deleting the file: {ex.Message}");
             }
         }
-        public bool CreateFile(string filePath, bool overwrite = false)
+        public void CreateFile(string filePath, bool overwrite = false)
         {
             try
             {
                 // Validações
                 if (string.IsNullOrEmpty(filePath))
                 {
-                    throw new ArgumentNullException(nameof(filePath), "O caminho do arquivo não pode ser nulo ou vazio.");
+                    throw new ArgumentNullException(nameof(filePath), "The file path can't be null or empty.");
                 }
 
                 if (File.Exists(filePath) && !overwrite)
                 {
-                    throw new IOException($"O arquivo {filePath} já existe. Especifique overwrite = true para sobrescrever.");
+                    throw new IOException($"The file {filePath} already exists. specify overwrite = true to overwrite file.");
                 }
 
-                // Cria o arquivo
+                if (PathValidator.IsValidNewPath(filePath) == false) return;
+
                 File.Create(filePath).Close();
 
-                return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao criar o arquivo: {ex.Message}");
-                return false;
+                Console.WriteLine($"Error while creating file: {ex.Message}");
             }
         }
-        public bool WriteFile(string filePath, string content, bool append = false)
+        public void WriteFile(string filePath, string content, bool append = false)
         {
             try
             {
                 if (string.IsNullOrEmpty(filePath))
                 {
-                    throw new ArgumentNullException(nameof(filePath), "O caminho do arquivo não pode ser nulo ou vazio.");
+                    throw new ArgumentNullException(nameof(filePath), "The file path can't be null or empty.");
                 }
+                
+                if(PathValidator.IsValidPath(filePath) == false) return;
 
                 File.WriteAllText(filePath, content, append ? Encoding.UTF8 : Encoding.Default);
-                return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao escrever no arquivo: {ex.Message}");
-                return false;
+                Console.WriteLine($"Error while loading file: {ex.Message}");
             }
         }
-        public bool MoveFile(string sourcePath, string destinationPath)
+        public void MoveFile(string sourcePath, string destinationPath)
         {
             try
             {
                 if (string.IsNullOrEmpty(sourcePath))
                 {
-                    throw new ArgumentNullException(nameof(sourcePath), "O caminho da origem não pode ser nulo ou vazio.");
+                    throw new ArgumentNullException(nameof(sourcePath), "The origin path can't be null or empty.");
                 }
 
                 if (string.IsNullOrEmpty(destinationPath))
                 {
-                    throw new ArgumentNullException(nameof(destinationPath), "O caminho do destino não pode ser nulo ou vazio.");
+                    throw new ArgumentNullException(nameof(destinationPath), "The destination path can't be null or empty.");
                 }
 
-                if (!File.Exists(sourcePath))
-                {
-                    throw new FileNotFoundException($"O arquivo {sourcePath} não foi encontrado.");
-                }
+                if(PathValidator.IsValidPath(sourcePath) == false) return; 
+                if(PathValidator.IsValidNewPath(destinationPath) == false) return;
 
                 File.Move(sourcePath, destinationPath);
-                return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao mover o arquivo: {ex.Message}");
-                return false;
+                Console.WriteLine($"Error while moving file: {ex.Message}");
             }
         }
-        public string? ReadFile(string filePath)
+        public void ReadFile(string filePath)
         {
             try
             {
                 if (string.IsNullOrEmpty(filePath))
                 {
-                    throw new ArgumentNullException(nameof(filePath), "O caminho do arquivo não pode ser nulo ou vazio.");
+                    throw new ArgumentNullException(nameof(filePath), "The file path can't be null or empty.");
                 }
 
-                if (!File.Exists(filePath))
-                {
-                    throw new FileNotFoundException($"O arquivo {filePath} não foi encontrado.");
-                }
+                if(PathValidator.IsValidPath(filePath) == false) return;
 
-                return File.ReadAllText(filePath);
+                Console.WriteLine(File.ReadAllText(filePath));
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao ler o arquivo: {ex.Message}");
-                return null;
+                Console.WriteLine($"Error while reading file: {ex.Message}");
             }
         }
-        public bool RenameFile(string oldPath, string newPath)
+        public void RenameFile(string oldFileNameWithPath, string newFileNameWithPath)
         {
             try
             {
-                if (string.IsNullOrEmpty(oldPath))
+                if (string.IsNullOrEmpty(oldFileNameWithPath))
                 {
-                    throw new ArgumentNullException(nameof(oldPath), "O caminho antigo não pode ser nulo ou vazio.");
+                    throw new ArgumentNullException(nameof(oldFileNameWithPath), "The renamed file path can't be null or empty.");
                 }
 
-                if (string.IsNullOrEmpty(newPath))
+                if (string.IsNullOrEmpty(newFileNameWithPath))
                 {
-                    throw new ArgumentNullException(nameof(newPath), "O caminho novo não pode ser nulo ou vazio.");
+                    throw new ArgumentNullException(nameof(newFileNameWithPath), "The new path for renamed file can't be null or empty.");
                 }
 
-                if (!File.Exists(oldPath))
-                {
-                    throw new FileNotFoundException($"O arquivo {oldPath} não foi encontrado.");
-                }
+                if(PathValidator.IsValidPath(oldFileNameWithPath) == false) return;
+                if(PathValidator.IsValidNewPath(newFileNameWithPath) == false) return;
 
-                File.Move(oldPath, newPath);
-                return true;
+                File.Move(oldFileNameWithPath, newFileNameWithPath);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao renomear o arquivo: {ex.Message}");
-                return false;
+                Console.WriteLine($"Error while renaming file: {ex.Message}");
             }
         }
-        
+
     }
 
 }

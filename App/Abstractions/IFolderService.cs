@@ -8,10 +8,9 @@ namespace App.Abstractions
 {
     internal interface IFolderService
     {
-        public bool CreateFolder(string path);
-        public bool DeleteFolder(string path, bool recursive = false);
-        public bool RenameFolder(string oldPath, string newPath);
-        public bool MoveFolder(string sourcePath, string destinationPath);
-        public void CopyFolder(string source, string dest);
+        public void CreateFolder(string path);
+        public void DeleteFolder(string path, bool recursive = false);
+        public void RenameFolder(string oldPath, string newPath);
+        public void MoveFolder(string sourcePath, string destinationPath);
     }
 }

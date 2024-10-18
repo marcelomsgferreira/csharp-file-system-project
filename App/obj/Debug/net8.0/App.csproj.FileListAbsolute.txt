@@ -12,3 +12,4 @@ E:\TI\DotNET\Linguagem\C#\EstudoLibs\FileManagementSystem\Fms\App\obj\Debug\net8
 E:\TI\DotNET\Linguagem\C#\EstudoLibs\FileManagementSystem\Fms\App\obj\Debug\net8.0\App.pdb
 E:\TI\DotNET\Linguagem\C#\EstudoLibs\FileManagementSystem\Fms\App\obj\Debug\net8.0\App.genruntimeconfig.cache
 E:\TI\DotNET\Linguagem\C#\EstudoLibs\FileManagementSystem\Fms\App\obj\Debug\net8.0\ref\App.dll
+E:\TI\DotNET\Linguagem\C#\EstudoLibs\FileManagementSystem\Fms\App\obj\Debug\net8.0\App.sourcelink.json
